@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Api Testing</title>
+  <style>
+    body {
+      background: #383838;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      max-height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      margin: 10rem auto;
+      max-width: 800px;
+      align-items: center;
+      background: #677;
+      color: black;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .click {
+      background: rgb(65, 65, 65);
+      color: #fff;
+      width: 150px;
+      height: 30px;
+      text-align: center;
+      display: inline-block;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    .click:hover {
+      color: rgb(65, 65, 65);
+      background: #fff;
+    }
+
+    .info {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .no-show {
+      display: none;
+      visibility: none;
+      width: 0;
+      height: 0;
+      transition: all 25s ease-in;
+    }
+
+    .no-show-js {
+      background: rgb(48, 107, 107);
+      text-align: center;
+      border-radius: 4px;
+      margin: 0 auto;
+      max-width: 500px;
+      height: 45%;
+      padding: 10px 3%;
+      transition: all 25s ease-in;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2 id="l-heading">A TEST FOR USING DJANGO APIs WITH JS</h2>
+    <button id="click" class="click" onclick="OnlyFunction()">click me</button>
+    <div class="no-show" id="no-show">
+      <p class="info">Hi <span id="firstname"></span></p>
+      <p class="info">Your lastname is <span id="lastname"></span></p>
+      <p class="info">You are <span id="age"></span>years old</p>
+      <p class="info">You are <span id="height"></span>metres in height</p>
+      <p id="darkskinned" class="info"></p>
+      <p class="info">You created your account on <span id="time"></span></p>
+
+    </div>
+  </div>
+  <script>
+    const header = document.getElementById("l-heading")
+    const firstname = document.getElementById("firstname")
+    const lastname = document.getElementById("lastname")
+    const age = document.getElementById("age")
+    const height = document.getElementById("height")
+    const darkskinned = document.getElementById("darkskinned")
+    const time = document.getElementById("time")
+    const show_btn = document.querySelector("#click")
+    const showdiv = document.querySelector("#no-show")
+
+    const OnlyFunction = async () => {
+      if (show_btn.textContent == 'unclick...') {
+        show_btn.textContent = 'click me'
+        showdiv.classList.remove("no-show-js")
+        showdiv.classList.add("no-show")
+      }
+      else if (show_btn.textContent == 'click me') {
+        show_btn.textContent = 'unclick...'
+        showdiv.classList.remove("no-show")
+        showdiv.classList.add("no-show-js")
+      }
+
+      const req= await fetch("http://127.0.0.1:8000/api/my-very-first-endpoint/Linus",{method: "get"})
+      const output= await req.json()
+
+
+      if (output['darkskinned'] === true) {
+        return darkskinned.textContent = 'you are darkskinned'
+      }
+      else {
+        darkskinned.textContent = 'you are lightskinned'
+      }
+
+      firstname.textContent = output['firstname'],
+      lastname.textContent = output['lastname'],
+      age.textContent = output['age'],
+      height.textContent = output['height'],
+      time.textContent = output['created_at']
+      
+      return true
+    }
+
+  </script>
+</body>
+
+</html>
