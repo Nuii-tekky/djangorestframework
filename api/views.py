@@ -12,8 +12,7 @@ def first_api_response(request,format= None):
   return Response(serialized.data)
 
 
-# read,update and delete data by name
-@api_view(['GET'])
+# read,update and delete data by name8@api_view(['GET'])
 def view_by_name(request,name,format= None):
   try:
     db_obj= StudentsData.objects.get(firstname= name)
