@@ -93,6 +93,7 @@
     const show_btn = document.querySelector("#click")
     const showdiv = document.querySelector("#no-show")
 
+
     const OnlyFunction = async () => {
       if (show_btn.textContent == 'unclick...') {
         show_btn.textContent = 'click me'
@@ -105,8 +106,8 @@
         showdiv.classList.add("no-show-js")
       }
 
-      const req= await fetch("http://127.0.0.1:8000/api/my-very-first-endpoint/Linus",{method: "get"})
-      const output= await req.json()
+      const req = await fetch("http://127.0.0.1:8000/api/my-very-first-endpoint/Linus", { method: "get" })
+      const output = await req.json()
 
 
       if (output['darkskinned'] === true) {
@@ -117,11 +118,11 @@
       }
 
       firstname.textContent = output['firstname'],
-      lastname.textContent = output['lastname'],
-      age.textContent = output['age'],
-      height.textContent = output['height'],
-      time.textContent = output['created_at']
-      
+        lastname.textContent = output['lastname'],
+        age.textContent = output['age'],
+        height.textContent = output['height'],
+        time.textContent = output['created_at']
+
       return true
     }
 

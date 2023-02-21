@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testing</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: rgb(59, 57, 57);
+      color: white;
+    }
+
+    .container {
+      margin: 12rem auto;
+      max-width: 600px;
+      border-radius: 5px;
+      padding: 6px;
+      background: #555;
+      color: inherit;
+      text-align: center;
+    }
+
+    input,select {
+      display: block;
+      width: 70%;
+      border-radius: 3px;
+      padding: 4px;
+      border: 0;
+      outline: none;
+      margin: 10px 60px;
+
+    }
+
+    input:focus,select:focus {
+      border: 0;
+      outline: none;
+    }
+
+    #send {
+      color: red;
+      background-color: rgb(45, 43, 43);
+
+    }
+
+    #send:active {
+      transition: all 0.4s ease;
+      transform: scale(0.965);
+    }
+
+    #output-message {
+      color: rgb(15, 206, 15);
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <p id="output-message"></p>
+    <form action="" id="TheForm">
+      <input type="text" id="firstname">
+      <input type="text" id="lastname">
+      <input type="number" id="age">
+      <input type="number" id="height">
+      <select name="skin" id="darkskinned">
+        <option >light</option>
+        <option >dark</option>
+      </select>
+      <input type="submit" value="send" id="send">
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("TheForm").addEventListener("submit", (e) => {
+      e.preventDefault()
+
+      firstname = document.getElementById("firstname").value;
+      lastname = document.getElementById("lastname").value;
+      age = document.getElementById("age").value;
+      height= document.getElementById("height").value;
+      darkskinned = document.getElementById("darkskinned").value;
+      if (darkskinned == "light") {
+        darkskinned = false
+      }
+      if (darkskinned == "dark") {
+        darkskinned = true
+      }
+
+      console.log(darkskinned)
+      const formData = new FormData()
+      formData.append("firstname",firstname.toUpperCase());
+      formData.append("lastname",lastname.toUpperCase());
+      formData.append("age",age);
+      formData.append("height",height);
+      formData.append("Darkskinned",darkskinned);
+      formData.append("csrfmiddlewaretoken","{{ csrf_token }}");
+      console.log(formData)
+
+      fetch(
+        "http://127.0.0.1:8000/api/send-post-data",
+        {
+          method: "POST",
+          body: formData
+        }
+      )
+      .then(
+        response=> response.json()
+      )
+      .then(
+        data=>  {
+          console.log("success: ", data)
+        }
+      )
+      .catch(
+        err=> {
+          console.error("error: ",err)
+        }
+      )
+    }
+    )
+  </script>
+</body>
+
+</html>
