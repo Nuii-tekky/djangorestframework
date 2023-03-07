@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #383838;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      max-height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      margin: 10rem auto;
+      max-width: 300px;
+      align-items: center;
+      color: black;
+      padding: 8px;
+      text-align: center;
+      border-radius: 6px;
+    }
+
+
+    button{
+      display: inline-block;
+      padding: 7px;
+      background: rgb(179, 19, 19);
+      color: wheat;
+      width: 74%;
+      border-radius: 4px;
+      border: 0;
+      outline: none;
+    }
+
+    button:active{
+      transition: all 0.4s ease;
+      transform: scale(0.78787);
+      background: rgb(154, 12, 12);
+    }
+
+    select{
+      border: 0;
+    }
+    select:focus
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <button id="go" onclick="run()">Go</button>
+
+    <select id="choose">
+      <option>Deny</option>
+      <option>Allow</option>
+    </select>
+  </div>
+
+</body>
+
+</html>
