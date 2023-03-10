@@ -2,9 +2,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
-from .serializer import ObjectsSerializer
-from crudx.models import StudentsData
+from .serializer import ObjectsSerializer,WordSerializer,imageSerializer
+from crudx.models import StudentsData,RandomWord,images
 
+
+
+# -----------------------------student data model cruding-----------------------
 
 @api_view(['GET'])
 def first_api_response(request,format= None):
@@ -26,7 +29,7 @@ def view_by_name(request,name,format= None):
 
 
 
-@api_view(['POST','PUT'])
+@api_view(['POST'])
 def add_data(request,format= None):
   serializer= ObjectsSerializer(data= request.data)
   if serializer.is_valid():
@@ -36,20 +39,93 @@ def add_data(request,format= None):
     return Response({"saved": "not saved"})  
   
 
-# @api_view(['GET','PUT','DELETE'])
-# def view_by_id(request,id,format= None):
-#   try:
-#     db_obj= StudentsData.objects.get(id= id)
-#   except StudentsData.DoesNotExist:
-#     return Response(status= status.HTTP_404_NOT_FOUND)  
-#   if request.method== 'GET':
-#     serialized= ObjectsSerializer(db_obj,many= False)
-#     return Response(serialized.data)
-#   elif request.method== 'PUT':
-#     serialized = ObjectsSerializer(db_obj,data= request.data)
-#     if serialized.is_valid():
-#       serialized.save()
-#       return Response(serialized.data)
-#     else:
-#       return Response(status= status.HTTP_400_BAD_REQUEST) 
+
+@api_view(["PUT"])   
+def update_data(request,id,format= None):
+  try:
+    db_obj= StudentsData.objects.get(id= id)
+  except RandomWord.DoesNotExist:
+    return Response({"error": "sorry we cant find this student!!!"}) 
+  serialized= ObjectsSerializer(db_obj,data= request.data)  
+  if serialized.is_valid():
+    serialized.save()
+    return Response({"details": "saved"})
+  else:
+    return Response({"details": "not updated!!!"}) 
   
+
+
+#------------------------- randomword model cruding-----------------------------
+
+@api_view(['GET'])
+def view_word(request,id,format= None):
+  try:
+    db_obj= RandomWord.objects.get(id= id)
+  except RandomWord.DoesNotExist:
+    return Response({"details": "word not found"})
+
+  serialized= WordSerializer(db_obj,many= False)
+  return Response(serialized.data)
+
+@api_view(['POST'])
+def add_word(request,format= None):
+  try:
+    db_obj= RandomWord.objects.get(word= request.data['word'])
+    print(db_obj)
+    if db_obj != {} or db_obj is not None:
+      return Response({"details": "sorry word is already there"})
+  except RandomWord.DoesNotExist:
+    serializer= WordSerializer(data= request.data)
+    if serializer.is_valid():
+      serializer.save()
+      return Response({"details": "word saved"})
+    else:
+      return Response({"details": "failed to save word"})  
+
+
+@api_view(["PUT"])   
+def changeword(request,id,format= None):
+  try:
+    db_obj= RandomWord.objects.get(id= id)
+  except RandomWord.DoesNotExist:
+    return Response({"error": "sorry we cant find this object!!!!!!!!"}) 
+  serialized= WordSerializer(db_obj,data= request.data)  
+  if serialized.is_valid():
+    serialized.save()
+    return Response({"details": "saved"})
+  else:
+    return Response({"details": "not updated!!!"})  
+
+
+
+# -------------------------image model cruding----------------------------------
+
+@api_view(["GET"])
+def get_image(request,title,format=None):
+  try:
+    db_obj= images.objects.get(title= title)
+  except images.DoesNotExist:
+    return Response({"details": "not found"})  
+  serialized= imageSerializer(db_obj,many= False)  
+  print(serialized.data)
+  return Response({"details":serialized.data})
+
+
+@api_view(["POST"])
+def add_image(request):
+  try:
+    db_obj= images.objects.get(title= request.data['title'])
+    print(db_obj)
+    if db_obj != {} or db_obj is not None:
+      return Response({"saved":"object exists"})
+  except images.DoesNotExist:
+    serializer= imageSerializer(data= request.data)
+    header= request.headers["hello"]
+    print(header)
+    if serializer.is_valid():
+      serializer.save()
+      return Response({"saved": "image saved"})
+    else:
+      return Response({"saved": "image not saved"})  
+
+    

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: rgb(94, 110, 102);
+      color: beige;
+    }
+
+    .form-elements {
+      margin: auto;
+      max-width: 300px;
+      padding: 20px;
+    }
+
+    .form-elements input {
+      margin: 8px 0;
+      padding: 6px;
+      border-radius: 4px;
+      border: 0;
+      outline: none;
+      width: 90%;
+    }
+
+    #img_title {
+      margin-left: 4px;
+    }
+
+    .form-elements h4 {
+      color: rgb(63, 226, 51);
+      font-size: 19px;
+      padding-bottom: 40px;
+      padding-top: 6rem;
+    }
+
+    button {
+      margin-left: 34.8rem;
+      padding: 8px;
+      border-radius: 4px;
+      border: 0;
+      background: rgb(51, 67, 60);
+      color: azure;
+      width: 17.2%;
+    }
+
+    button:hover {
+      transition: background 0.4s ease;
+      background: azure;
+      color: rgb(51, 67, 60);
+    }
+
+    button:active {
+      transform: scale(0.8855);
+      transition: all 0.4s ease;
+    }
+
+    #message {
+      margin-left: 34.4rem;
+      padding: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      width: 19.667%;
+    }
+  </style>
+
+</head>
+
+<body>
+  <form>
+    <div class="form-elements">
+      <h4>Upload an image to django api endpoint</h4>
+      <input type="text" id="img_title" placeholder="type the title" required>
+      <input type="file" id="target_img">
+    </div>
+
+  </form>
+  <button onclick="send()" id="submit-btn">Post image</button>
+  <h5 id="message">please make sure the image is less than 10mb</h5>
+
+
+  <script>
+    const image_input = document.getElementById("target_img")
+    const image_title = document.getElementById("img_title")
+    const message = document.getElementById("message")
+
+
+    image_input.addEventListener("change", fileInputCheck)
+
+    function fileInputCheck(e) {
+      // list of allowed file types
+      const allowed_ext = ['img', 'png', 'jpg', 'jpeg', 'gif', 'svg']
+      // get the selected files
+      const [file_select] = e.target.files
+
+      // get the filename and size from the constant created above
+      const { name: Filename, size } = file_select
+
+      // get the extension of the file
+      const regex = new RegExp('[^.]+$')
+      const extension = Filename.match(regex)
+
+      // convert size in bytes to kilobytes>
+      const Filesize = (size / 1000000).toFixed(2)
+      console.log(Filesize)
+
+
+      // write complete file name to the div for such
+      const submitbtn = document.getElementById("submit-btn")
+      if (allowed_ext.includes(`${extension}`) === false) {
+        submitbtn.style.visibility = "hidden"
+        message.textContent = "please select an image file"
+        message.style.color = "rgb(255, 218, 9)"
+        return null
+      }
+      else if (Filesize >= 11.01) {
+        submitbtn.style.visibility = "hidden"
+        message.textContent = "  file size must be less than 10mb"
+        message.style.color = "rgb(255, 218, 9)"
+        return null
+      }
+      else {
+        submitbtn.style.visibility = "visible"
+        message.textContent = "  your file is okay click post image"
+        message.style.color = "rgb(16, 232, 34)"
+        return true
+      }
+    }
+
+    const Title = input => {
+      if (typeof (input) === "string") {
+        let first_char = input.charAt(0)
+        let updated_first_char = first_char.toUpperCase()
+        let newString = input.replace(first_char, updated_first_char)
+        return newString
+      }
+      else {
+        console.log("fuck off")
+      }
+    }
+
+
+    async function send() {
+
+      let p_image = image_input.files[0];
+      let p_title = image_title.value;
+
+      console.log(p_image)
+      let form = new FormData()
+      form.append("title", Title(p_title));
+      form.append("img", p_image);
+      form.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+      console.log(form)
+
+      let image_endpoint = "http://127.0.0.1:8000/api/upload-image"
+
+      const response = await fetch(
+        image_endpoint,
+        {
+          method: "POST",
+          headers: {
+            "hello": "hi python terminal"
+          },
+          body: form
+        },
+
+      )
+
+      const data = await response.json()
+
+      if (data["saved"] === "image saved") {
+        message.style.color = "yellowgreen"
+        message.textContent = "image uploaded successfully 🎷🎷🎷"
+      }
+      else if(data["saved"] === "image not saved"){
+        message.style.color = "rgb(255, 218, 9)"
+        message.textContent = "image upload failed "
+      }
+      else if(data["saved"]=== "object exists"){
+        message.style.color = "rgb(255, 218, 9)"
+        message.textContent = "Sorry that title already exists in our database"
+      }
+    }
+
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h3 id="date"></h3>
+  <script>
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+
+    function length(input) {
+      if (typeof (input) === "number") {
+        let numb = input
+        let newstring = numb.toString()
+        return newstring.length
+      }
+    }
+
+    function checkSingledigit(input) {
+      let teehech = ["0", "4", "5", "6", "7", "8", "9"]
+      let converted = input.toString()
+      if (teehech.includes(converted)) {
+        return `${converted}th`
+      }
+      else if (converted === "1") {
+        return `${converted}st`
+      }
+      else if (converted === "2") {
+        return `${converted}nd`
+      }
+      else if (converted === "3") {
+        return `${converted}rd`
+      }
+    }
+
+    function checkTwoDigits(input) {
+      let teehech = ["11", "12", "13", "14", "15", "16", "17", "18", "19"]
+      let converted = input.toString()
+      let firststring = converted.charAt(0)
+      let laststring = converted.charAt(1)
+      let result = checkSingledigit(laststring)
+      if (teehech.includes(converted)) {
+        return `${converted}th`
+      }
+      return firststring + result
+    }
+
+    function appendOrdinals(input) {
+      if (typeof (input) === "number") {
+        if (length(input) === 1) {
+          let result = checkSingledigit(input)
+          return result
+        }
+        else if (length(input) === 2) {
+          let result = checkTwoDigits(input)
+          return result
+        }
+        else {
+          console.log("fuck off!!!!!!!!!!!")
+        }
+      }
+      else {
+        console.log("fuck off")
+      }
+    }
+
+    function checktimedigit(time) {
+      if (time < 10) {
+        return "0" + time
+      }
+      else {
+        return time
+      }
+    }
+
+    function is_am(time) {
+      if (time < 12 && time > 0) {
+        return true
+      }
+      else {
+        return false
+      }
+    }
+
+
+
+    const showdate=()=> {
+      let date = new Date()
+      let year = date.getFullYear()
+      let month = date.getMonth()
+      let true_month = months[month]
+      let actualdate = date.getDate()
+      let true_actualdate = appendOrdinals(actualdate)
+      let day = date.getDay()
+      let hour = date.getHours()
+      let minute = date.getMinutes()
+      let true_minute = checktimedigit(minute)
+      let seconds = date.getSeconds()
+      let true_seconds = checktimedigit(seconds)
+
+      let meridien_state = function (input) {
+        if (is_am(input)) {
+          return "am"
+        }
+        else {
+          return "pm"
+        }
+      }
+      return document.getElementById("date").textContent = `Today is the ${true_actualdate} day of ${true_month},${year} and the Time is: ${hour}:${true_minute}:${true_seconds} ${meridien_state(hour)} `
+
+    }
+
+    setInterval(showdate, 1)
+  </script>
+</body>
+
+</html>

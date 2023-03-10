@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,16 +9,12 @@
   <title>Document</title>
 </head>
 <body>
-  <select name="skin" id="darkskinned">
-    <option id="light">light</option>
-    <option id="dark">dark</option>
-  </select>
-  <p onclick="run()">Click</p>
-
+  <img id="img">
+  <button onclick="run()">click</button>
   <script>
-    const run=()=>{
-      var check= document.getElementById("darkskinned").value;
-      console.log(check)
+    function run(){
+      let image= document.getElementById("img")
+      image.setAttribute("src","./that.jpg")
       return true
     }
   </script>

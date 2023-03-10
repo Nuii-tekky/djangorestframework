@@ -50,8 +50,25 @@
 
     select{
       border: 0;
+      width: 60%;
+      margin: 10px;
+      padding: 3px 5px;
+      border-radius: 4px;
+      background: rgb(68, 66, 66);
     }
-    select:focus
+    select:focus{
+      outline: none;
+    }
+
+    select option{
+      background: rgb(158, 65, 65);
+      color: #fff;
+    }
+
+    select option:hover{
+      background: purple;
+      color: navajowhite;
+    }
   </style>
 </head>
 
@@ -66,6 +83,34 @@
     </select>
   </div>
 
+
+  <script>
+    const run=async ()=>{
+      let selected= document.getElementById("choose").value;
+      let header_val=""
+      
+      if(selected === "Deny"){
+        header_val= "render_mobile"
+        
+      }
+      else{
+        selected= false
+        header_val="render_desktop"
+      }
+
+      let request_params= {
+        method:"GET",
+        headers: {"details":`${header_val}`}
+      }
+
+      let res= await fetch("http://127.0.0.1:8000/land/render-dynamic",request_params)
+      if(res.redirected){
+        let url= res.url
+        window.location.replace(url)
+      }
+      
+    }
+  </script>
 </body>
 
 </html>

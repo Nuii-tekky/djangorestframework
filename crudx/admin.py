@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import StudentsData
+from .models import StudentsData,RandomWord,images
 
-# Register your models here.
-admin.site.register(StudentsData)
+
+class ShowId(admin.ModelAdmin):
+  readonly_fields= (["id"])
+
+admin.site.register(StudentsData,ShowId)
+admin.site.register(RandomWord,ShowId)
+admin.site.register(images,ShowId)

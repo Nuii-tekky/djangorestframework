@@ -28,7 +28,8 @@
       text-align: center;
     }
 
-    input,select {
+    input,
+    select {
       display: block;
       width: 70%;
       border-radius: 3px;
@@ -39,7 +40,8 @@
 
     }
 
-    input:focus,select:focus {
+    input:focus,
+    select:focus {
       border: 0;
       outline: none;
     }
@@ -71,21 +73,36 @@
       <input type="number" id="age">
       <input type="number" id="height">
       <select name="skin" id="darkskinned">
-        <option >light</option>
-        <option >dark</option>
+        <option>light</option>
+        <option>dark</option>
       </select>
       <input type="submit" value="send" id="send">
     </form>
   </div>
 
   <script>
+
+    const Title = input => {
+      if (typeof (input) === "string") {
+        let first_char = input.charAt(0)
+        let updated_first_char = first_char.toUpperCase()
+        let newString = input.replace(first_char, updated_first_char)
+        return newString
+      }
+      else {
+        console.log("fuck off")
+      }
+    }
+
     document.getElementById("TheForm").addEventListener("submit", (e) => {
       e.preventDefault()
+
+      const message = document.getElementById("output-message")
 
       firstname = document.getElementById("firstname").value;
       lastname = document.getElementById("lastname").value;
       age = document.getElementById("age").value;
-      height= document.getElementById("height").value;
+      height = document.getElementById("height").value;
       darkskinned = document.getElementById("darkskinned").value;
       if (darkskinned == "light") {
         darkskinned = false
@@ -96,12 +113,12 @@
 
       console.log(darkskinned)
       const formData = new FormData()
-      formData.append("firstname",firstname.toUpperCase());
-      formData.append("lastname",lastname.toUpperCase());
-      formData.append("age",age);
-      formData.append("height",height);
-      formData.append("Darkskinned",darkskinned);
-      formData.append("csrfmiddlewaretoken","{{ csrf_token }}");
+      formData.append("firstname", Title(firstname));
+      formData.append("lastname", Title(lastname));
+      formData.append("age", age);
+      formData.append("height", height);
+      formData.append("Darkskinned", darkskinned);
+      formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
       console.log(formData)
 
       fetch(
@@ -111,19 +128,26 @@
           body: formData
         }
       )
-      .then(
-        response=> response.json()
-      )
-      .then(
-        data=>  {
-          console.log("success: ", data)
-        }
-      )
-      .catch(
-        err=> {
-          console.error("error: ",err)
-        }
-      )
+        .then(
+          response => response.json()
+        )
+        .then(
+          data => {
+            console.log("success: ", data)
+            message.textContent = "user saved successfully"
+            firstname = document.getElementById("firstname").value = "";
+            lastname = document.getElementById("lastname").value = "";
+            age = document.getElementById("age").value = "";
+            height = document.getElementById("height").value = "";
+            darkskinned = document.getElementById("darkskinned").value = "";
+
+          }
+        )
+        .catch(
+          err => {
+            console.error("error: ", err)
+          }
+        )
     }
     )
   </script>

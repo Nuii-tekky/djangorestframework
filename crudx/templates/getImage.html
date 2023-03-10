@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    a{
+      text-decoration: none;
+      color: grey;
+    }
+
+    body {
+      background: rgb(94, 110, 102);
+      color: beige;
+    }
+
+    .form-elements {
+      margin: auto;
+      max-width: 300px;
+      padding: 20px;
+    }
+
+    .form-elements input {
+      margin: 8px 0;
+      padding: 6px;
+      border-radius: 4px;
+      border: 0;
+      outline: none;
+      width: 90%;
+    }
+
+    .form-elements h4 {
+      color: rgb(63, 226, 51);
+      font-size: 19px;
+      padding-bottom: 30px;
+      padding-top: 3rem;
+    }
+
+    button {
+      margin-left: 34.5rem;
+      padding: 8px;
+      border-radius: 4px;
+      border: 0;
+      background: rgb(51, 67, 60);
+      color: azure;
+      width: 17.2%;
+    }
+
+    button:hover {
+      transition: background 0.4s ease;
+      background: azure;
+      color: rgb(51, 67, 60);
+    }
+
+    button:active {
+      transform: scale(0.8855);
+      transition: all 0.4s ease;
+    }
+
+    #message {
+      margin-left: 34.4rem;
+      padding: 10px 10px 3px 2px;
+      font-size: 14px;
+      font-weight: 500;
+      width: 19.667%;
+    }
+
+    .output-show {
+      background: rgb(75, 75, 75);
+      padding: 12px;
+      width: 320px;
+      border-radius: 5px;
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      margin-left: 31.88789rem;
+      margin-top: 2rem;
+
+    }
+
+    .output-show img {
+      max-width: 85px;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      /* margin: 4px ; */
+      object-fit: contain;
+      margin-left: 18px;
+      margin-top: 12px;
+      margin-bottom: 4px;
+      margin-right: 45px;
+      
+    }
+
+    .output-show h5 {
+      margin: 22px 0;
+      font-size: 16px;
+
+    }
+
+    .output-hide {
+      width: 0;
+      height: 0;
+      display: none;
+      visibility: hidden;
+      transition: visibility 0.4s ease;
+    }
+  </style>
+
+</head>
+
+<body>
+  <form>
+    <div class="form-elements">
+      <h4>Get Image from django api endpoint</h4>
+      <input type="text" id="title-input" placeholder="type the title" required>
+    </div>
+
+  </form>
+  <button onclick="send()" id="submit-btn">fetch image</button>
+  <h5 id="message">please type the title of the image</h5>
+  <div class="output-hide" id="output">
+    <a target="_blank"><img id="output-image"></a>
+    <h5 id="output-title"></h5>
+  </div>
+
+
+  <script>
+    const title_input = document.getElementById("title-input")
+    const message = document.getElementById("message")
+
+    const Title = input => {
+      if (typeof (input) === "string") {
+        let first_char = input.charAt(0)
+        let updated_first_char = first_char.toUpperCase()
+        let newString = input.replace(first_char, updated_first_char)
+        return newString
+      }
+      else {
+        console.log("fuck off")
+      }
+    }
+
+    async function send() {
+      let title = title_input.value;
+      let correct_title = Title(title)
+      let endpoint = `http://127.0.0.1:8000/api/view-image/${correct_title}`
+      const response = await fetch(endpoint, { method: "get" })
+      const data = await response.json()
+      if (data["details"] === "not found") {
+        message.textContent = "Sorry that title does not exist in our database"
+        message.style.color= "rgb(255, 218, 9)"
+        title_input.value = ""
+        output.classList.remove("output-show")
+        output.classList.add("output-hide")
+      }
+      else {
+        const output = document.getElementById("output")
+        const output_image = document.getElementById("output-image")
+        const output_title = document.getElementById("output-title")
+        const anchor= output_image.parentNode
+
+        let otitle = data["details"]["title"]
+        let img_src = data["details"]["img"]
+
+        message.textContent = "";
+        output.classList.remove("output-hide")
+        output.classList.add("output-show")
+        output_title.textContent = otitle;
+        output_image.setAttribute("src", img_src);
+        anchor.setAttribute("href",img_src)
+
+
+      }
+
+    }
+
+
+  </script>
+</body>
+
+</html>

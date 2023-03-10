@@ -78,7 +78,7 @@
       <p class="info">You are <span id="age"></span>years old</p>
       <p class="info">You are <span id="height"></span>metres in height</p>
       <p id="darkskinned" class="info"></p>
-      <p class="info">You created your account on <span id="time"></span></p>
+      <p class="info"><span id="time"></span></p>
 
     </div>
   </div>
@@ -94,6 +94,87 @@
     const showdiv = document.querySelector("#no-show")
 
 
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+    let days= ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+    
+    function length(input) {
+      if (typeof (input) === "number") {
+        let numb = input
+        let newstring = numb.toString()
+        return newstring.length
+      }
+    }
+
+    function checkSingledigit(input) {
+      let teehech = ["0", "4", "5", "6", "7", "8", "9"]
+      let converted = input.toString()
+      if (teehech.includes(converted)) {
+        return `${converted}th`
+      }
+      else if (converted === "1") {
+        return `${converted}st`
+      }
+      else if (converted === "2") {
+        return `${converted}nd`
+      }
+      else if (converted === "3") {
+        return `${converted}rd`
+      }
+    }
+
+    function checkTwoDigits(input) {
+      let teehech = ["11", "12", "13", "14", "15", "16", "17", "18", "19"]
+      let converted = input.toString()
+      let firststring = converted.charAt(0)
+      let laststring = converted.charAt(1)
+      let result = checkSingledigit(laststring)
+      if (teehech.includes(converted)) {
+        return `${converted}th`
+      }
+      return firststring + result
+    }
+
+    function appendOrdinals(input) {
+      if (typeof (input) === "number") {
+        if (length(input) === 1) {
+          let result = checkSingledigit(input)
+          return result
+        }
+        else if (length(input) === 2) {
+          let result = checkTwoDigits(input)
+          return result
+        }
+        else {
+          console.log("fuck off!!!!!!!!!!!")
+        }
+      }
+      else {
+        console.log("fuck off")
+      }
+    }
+
+    
+
+    function checktimedigit(time) {
+      if (time < 10) {
+        return "0" + time
+      }
+      else {
+        return time
+      }
+    }
+
+    function is_am(time) {
+      if (time < 12 && time > 0) {
+        return true
+      }
+      else {
+        return false
+      }
+    }
+
+
     const OnlyFunction = async () => {
       if (show_btn.textContent == 'unclick...') {
         show_btn.textContent = 'click me'
@@ -106,10 +187,13 @@
         showdiv.classList.add("no-show-js")
       }
 
-      const req = await fetch("http://127.0.0.1:8000/api/my-very-first-endpoint/Linus", { method: "get" })
+      const req = await fetch("http://127.0.0.1:8000/api/my-very-first-endpoint/Zaria", { method: "get" })
       const output = await req.json()
 
-
+      firstname.textContent = output['firstname'],
+      lastname.textContent = output['lastname'],
+      age.textContent = output['age'],
+      height.textContent = output['height']
       if (output['darkskinned'] === true) {
         return darkskinned.textContent = 'you are darkskinned'
       }
@@ -117,13 +201,39 @@
         darkskinned.textContent = 'you are lightskinned'
       }
 
-      firstname.textContent = output['firstname'],
-        lastname.textContent = output['lastname'],
-        age.textContent = output['age'],
-        height.textContent = output['height'],
-        time.textContent = output['created_at']
 
-      return true
+
+// aplication of what i've learnt about dates and time formatting
+
+      let timme = output["created_at"]
+      console.log(timme)
+
+      let date = new Date(timme)
+      let year = date.getFullYear()
+      let month = date.getMonth()
+      let true_month = months[month]
+      let actualdate = date.getDate()
+      let true_actualdate = appendOrdinals(actualdate)
+      let day = date.getDay()
+      let true_day= days[day]
+      let hour = date.getHours()
+      let minute = date.getMinutes()
+      let meridien_state = function (input) {
+        if (is_am(input)) {
+          return "am"
+        }
+        else {
+          return "pm"
+        }
+      }
+      let true_minute = checktimedigit(minute)
+
+      time.textContent = `
+      You created your account on ${true_day} the ${true_actualdate} of ${true_month}, ${year} at ${hour}:${minute} ${meridien_state(hour)}. 
+      
+      `
+
+    return true
     }
 
   </script>
