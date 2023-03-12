@@ -2,8 +2,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
-from .serializer import ObjectsSerializer,WordSerializer,imageSerializer
-from crudx.models import StudentsData,RandomWord,images
+from .serializer import ObjectsSerializer,WordSerializer,imageSerializer,testingSerializer
+from crudx.models import StudentsData,RandomWord,images,testing
 
 
 
@@ -67,6 +67,14 @@ def view_word(request,id,format= None):
   serialized= WordSerializer(db_obj,many= False)
   return Response(serialized.data)
 
+
+@api_view(['GET'])
+def viewallwords(req):
+  db_obj= RandomWord.objects.all()
+  serialized= WordSerializer(db_obj,many= True)
+  return Response({"details": serialized.data})
+
+
 @api_view(['POST'])
 def add_word(request,format= None):
   try:
@@ -127,5 +135,27 @@ def add_image(request):
       return Response({"saved": "image saved"})
     else:
       return Response({"saved": "image not saved"})  
+
+@api_view(["GET"])
+def gettesting(req,namee,format=None):
+  try:
+    db_obj= testing.objects.get(name= namee)
+  except testing.DoesNotExist:
+    try:
+       db_obj= testing.objects.get(nickname= namee)
+    except testing.DoesNotExist:
+      try:
+        db_obj= testing.objects.get(email= namee) 
+      except testing.DoesNotExist:
+        return Response({"details":"not found"})  
+  serialized= testingSerializer(db_obj,many= False)  
+  print(serialized.data)
+  data= serialized.data
+  with open("requests.txt","a") as file:
+    file.write(f'{str(data)}, \n')
+  return Response({"details":serialized.data}) 
+         
+
+
 
     

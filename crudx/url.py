@@ -1,5 +1,4 @@
 
-from django.contrib import admin
 from django.urls import path
 from . import views
 
@@ -13,8 +12,11 @@ urlpatterns = [
   path('render-checker',views.render_checker,name="renderchecker"),
   path("render-dynamic",views.render_dynamic,name="renderdynamic"),
   path("desktop",views.render_desktop,name="desktop"),
-  path("mobile",views.render_mobile,name="mobile")
+  path("mobile",views.render_mobile,name="mobile"),
+  path("multi",views.render_multitry,name="multitry"),
+  path("all-words",views.render_all_words,name="renderallwords")
 
 ]
+
 
 

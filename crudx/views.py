@@ -44,6 +44,14 @@ def render_desktop(request):
 def render_mobile(request):
   return render(request,"mobile.html")
 
+def render_multitry(req):
+  return render(req,"multitry.html")
+  
+
+def render_all_words(req):
+  return render(req,"allobj.html")
+
+
 
 
 

@@ -16,11 +16,16 @@ urlpatterns= [
   path('my-endpoint/<int:id>', views.view_word,name='view-word-response'),
   path('send-word',views.add_word,name= 'post-word'),
   path('update-word/<int:id>',views.changeword,name= "change_word"),
+  path('all-words',views.viewallwords,name="allwords"),
 
   # images
 
   path("upload-image",views.add_image,name= "add_image"),
-  path("view-image/<str:title>",views.get_image,name= "view_image")
+  path("view-image/<str:title>",views.get_image,name= "view_image"),
+
+
+  # testing for multiple trys
+  path("multitry/<str:namee>",views.gettesting,name="gettesting")
 ]
 
 

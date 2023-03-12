@@ -13,7 +13,7 @@
       margin-left: 33.4rem;
     }
     body {
-      background: #666;
+      background: rgb(70, 70, 70);
       color: white;
     }
 
@@ -24,6 +24,7 @@
       transform: translateX(550px);
       padding: 6px;
       border-radius: 4px;
+      width: 20%;
 
     }
 
@@ -39,13 +40,15 @@
     }
 
     .show {
-      margin: 5rem auto;
+      margin-top: 5rem;
+      margin-top: 5rem;
+      margin-left: 33rem;
       padding: 6px;
       border-radius: 5px;
       display: block;
       text-align: center;
-      background: #ccc;
-      color: black;
+      background: rgb(43, 9, 9);
+      color: rgb(247, 240, 240);
       width: 30%;
       height: 100%;
     }
@@ -59,7 +62,7 @@
   </button>
   <div class="hide" id="hide">
     <h4 id="name-para"></h4>
-    <h5 id="age-para"></h5>
+    <h5 id="nickname-para"></h5>
   </div>
 
   <script>
@@ -80,20 +83,20 @@
       let input = document.getElementById("input").value
       const div = document.getElementById("hide")
       const name = document.getElementById("name-para")
-      const agepara = document.getElementById("age-para")
+      const nicknamepara = document.getElementById("nickname-para")
       if (input != null && input !== "") {
         let search_data = Title(input)
         console.log(search_data)
 
-        const url = `http://127.0.0.1:8000/api/my-very-first-endpoint/${(search_data)}`
+        const url = `http://127.0.0.1:8000/api/multitry/${(search_data)}`
         const response = await fetch(url, { method: "get" })
-        console.log(await response)
         const readResponse = await response.json()
 
+        console.log(response)
         div.classList.remove("hide")
         div.classList.add("show")
-        name.textContent = `${readResponse['firstname'].toLowerCase()} | ${readResponse['lastname'].toLowerCase()}`
-        agepara.textContent = `${readResponse['age']} years old...`
+        name.textContent = `Realname:  ${readResponse.details['name']}`
+        nicknamepara.textContent = `nickname:  ${ readResponse.details['nickname']} `
       }
       else {
         div.classList.remove("show")

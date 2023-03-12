@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body{
+      background: rgb(61, 61, 61);
+      color: azure;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      
+      ;
+    }
+
+    button{
+      display: block;
+      padding: 5px 8px;
+      width: 14%;
+      border: 0;
+      border-radius: 4px;
+      color: aliceblue;
+      background: rgb(10, 153, 10);
+      font-size: 12px;
+      margin-top: 4rem;
+      margin-left: 34rem;
+    }
+
+    button:active{
+      transform: scale(0.88021);
+      transition: all 0.4s ease;
+    }
+
+    .show{
+      width: 300px;
+      background: rgb(59, 59, 59);
+      margin-left: 30rem;
+      border-radius: 4px;
+      padding: 10px;
+      margin-top: 2rem;
+    }
+
+    .no-show{
+      width: 0;
+      height: 0;
+      font-size: 1px;
+      background: transparent;
+      visibility: hidden;
+    }
+
+    ul{
+      margin-left: 14px;
+      line-height: 40px;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="addwordstodom()">get all</button>
+  <div class="no-show" id="no-show">
+    <ul id="object-list">
+    </ul>
+  </div>
+
+  <script>
+    const youel= document.getElementById("object-list")
+    const show= document.getElementById("no-show")
+    const fetcher=async()=>{
+      const res= await fetch("http://127.0.0.1:8000/api/all-words",{method:"GET"})
+      const data= await res.json()
+      return data
+    }
+
+    const addwordstodom=async()=>{
+      let data= await fetcher()
+      let data_array= data.details
+      data_array.reverse()
+      data_array.forEach(item =>{
+        let words= item.word
+        let li= document.createElement("li")
+        li.textContent= `The word is ${words} `
+        youel.appendChild(li)
+      })
+      show.classList.replace("no-show","show")
+
+      
+    }
+
+    
+  </script>
+</body>
+</html> 

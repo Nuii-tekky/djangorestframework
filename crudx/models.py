@@ -28,3 +28,10 @@ class images(models.Model):
     return self.title.title()
 
   
+
+class testing(models.Model):
+  name= models.CharField(max_length= 70,blank= True,null= True)  
+  nickname= models.CharField(max_length= 70,blank= True,null= True)  
+  email= models.EmailField(blank= True,null= True)
+  def __str__(self) -> str:
+    return self.name.title()
