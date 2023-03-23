@@ -1,6 +1,0 @@
-{'id': 2, 'name': 'Kevin', 'nickname': 'Kay'}, 
-{'id': 1, 'name': 'Emeka', 'nickname': 'Emmy'}, 
-{'id': 4, 'name': 'Favour', 'nickname': 'Fae'}, 
-{'id': 4, 'name': 'Favour', 'nickname': 'Fae', 'email': 'Favour@gmail.com'}, 
-{'id': 2, 'name': 'Kevin', 'nickname': 'Kay', 'email': 'Kevin@gmail.com'}, 
-{'id': 3, 'name': 'Daniel', 'nickname': 'Danny', 'email': 'Daniel@gmail.com'}, 

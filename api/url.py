@@ -22,10 +22,14 @@ urlpatterns= [
 
   path("upload-image",views.add_image,name= "add_image"),
   path("view-image/<str:title>",views.get_image,name= "view_image"),
+  path("allimages",views.getallimg,name="allimg"),
 
 
   # testing for multiple trys
-  path("multitry/<str:namee>",views.gettesting,name="gettesting")
+  path("multitry/<str:namee>",views.gettesting,name="gettesting"),
+
+  # another random test
+  path("anothertest",views.getanothertesting,name="another test")
 ]
 
 

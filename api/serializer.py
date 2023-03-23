@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from crudx.models import StudentsData,RandomWord,images,testing
+from crudx.models import StudentsData,RandomWord,images,testing,anothertesting
 
 
 class ObjectsSerializer(serializers.ModelSerializer):
@@ -26,3 +26,10 @@ class testingSerializer(serializers.ModelSerializer):
   class Meta:
     model= testing
     fields= "__all__"
+
+
+
+class anotherSerializer(serializers.ModelSerializer):
+  class Meta:
+    model= anothertesting
+    fields="__all__"

@@ -52,6 +52,8 @@ def render_all_words(req):
   return render(req,"allobj.html")
 
 
+def renderallimg(req):
+  return render(req,"allimg.html")
 
 
 

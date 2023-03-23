@@ -14,7 +14,8 @@ urlpatterns = [
   path("desktop",views.render_desktop,name="desktop"),
   path("mobile",views.render_mobile,name="mobile"),
   path("multi",views.render_multitry,name="multitry"),
-  path("all-words",views.render_all_words,name="renderallwords")
+  path("all-words",views.render_all_words,name="renderallwords"),
+  path("all-img",views.renderallimg,name="allimg")
 
 ]
 

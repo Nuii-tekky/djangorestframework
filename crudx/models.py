@@ -35,3 +35,10 @@ class testing(models.Model):
   email= models.EmailField(blank= True,null= True)
   def __str__(self) -> str:
     return self.name.title()
+
+
+class anothertesting(models.Model):
+  title= models.CharField(max_length= 70,blank= True,null= True)  
+  number= models.IntegerField(blank= True,null= True)
+  summary= models.CharField(blank=True,null=True,max_length= 70)
+

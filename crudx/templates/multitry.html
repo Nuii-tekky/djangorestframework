@@ -88,11 +88,11 @@
         let search_data = Title(input)
         console.log(search_data)
 
-        const url = `http://127.0.0.1:8000/api/multitry/${(search_data)}`
+        const url = `http://127.0.0.1:8000/api/multitry/${search_data}`
         const response = await fetch(url, { method: "get" })
         const readResponse = await response.json()
 
-        console.log(response)
+        console.log(readResponse)
         div.classList.remove("hide")
         div.classList.add("show")
         name.textContent = `Realname:  ${readResponse.details['name']}`
