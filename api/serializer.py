@@ -1,9 +1,16 @@
 
 from rest_framework import serializers
 from crudx.models import StudentsData,RandomWord,images,testing,anothertesting
+from django.contrib.auth import get_user_model
 
 
-class ObjectsSerializer(serializers.ModelSerializer):
+
+class UserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model= get_user_model()
+    fields= '__all__'
+
+class ObjectsSerializer(serializers.ModelSerializer): 
   class Meta:
     model = StudentsData
     fields = '__all__' 

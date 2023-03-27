@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+
+<body>
+  <input type="text" placeholder="username" id="uname">
+  <input type="password" id="passwd">
+  <button id="btn">click me</button>
+  <script>
+    const btn = document.getElementById("btn")
+
+    async function senddata() {
+      const uname = document.getElementById("uname").value
+      const passw = document.getElementById("passwd").value
+
+      const data = {
+        "username": uname,
+        "password": passw
+      }
+
+      const endpoint = "http://127.0.0.1:8000/api/verifyuser"
+      const res = await fetch(endpoint, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+      })
+
+      const read_res= await res.json()
+      const token= read_res["token"]
+      sessionStorage.setItem("token", token)
+      
+      let reqparams={
+        method:"POST",
+        headers:{
+          "Authorization":token,
+          "X-CSRFToken": "{{ csrf_token }}"
+        }
+      }
+      console.log(read_res)
+      const another_fetch=await fetch("http://127.0.0.1:8000/land/auther",reqparams)
+      const response= await another_fetch.json()
+      console.log(response)
+
+
+
+    }
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault()
+      senddata()
+    })
+  </script>
+</body>
+
+</html>

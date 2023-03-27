@@ -1,8 +1,11 @@
+from django.contrib.auth import get_user_model
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
-from .serializer import ObjectsSerializer,WordSerializer,imageSerializer,testingSerializer,anotherSerializer
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated
+
+from .serializer import ObjectsSerializer,WordSerializer,imageSerializer,testingSerializer,UserSerializer
 from crudx.models import StudentsData,RandomWord,images,testing,anothertesting
 
 
@@ -165,14 +168,57 @@ def gettesting(req,namee):
   print(res["details"])
   return res
 
-
 # ----------------------------------anotherrandom testing-----------------------
 @api_view(["POST"])
-def getanothertesting(req):
+def getanothertesting(req,format= None):
   try:
-    db_obj= anothertesting.objects.get(title= req.data['title'],summary= req.data['summary'])
-  except anothertesting.DoesNotExist:
-    return Response({"details":"not found"})  
-  serialised= anotherSerializer(db_obj,many=False)
-  return Response({"details":serialised.data})
+    title01= req.data["title"]
+    title02= req.data['summary']
+    try:
+      db_obj= anothertesting.objects.get(title=title01,summary= title02)  
+      if db_obj is not None and db_obj != {}:
+        token,created = Token.objects.create(user= db_obj)
+        return Response({"details":"object exists","token":token.key})
+    except anothertesting.DoesNotExist:
+      return Response({"error":"object not found"}) 
+    except TypeError:
+        return Response({"error":"check your functions well please"})
+  except KeyError:
+    return Response({"details":"invalid inputs"})  
+
+
+#--------------------------- authorization------------------------------------- 
+@api_view(["POST"])
+def adduser(req):
+  serialised= UserSerializer(data= req.data)
+  if serialised.is_valid():
+    serialised.save()
+    return Response({"details":"user saved"})
+  else:
+    return Response({"details":"something went wrong"})
+
+
+
+
+@api_view(["POST"])
+def verify_user(req):
+  try:
+    passwordd = req.data['password']
+    usernamee = req.data['username']
+    try:
+      attempted_user= get_user_model().objects.get(username= usernamee,password= passwordd)
+      if attempted_user is not None and attempted_user != {}:
+        token,created= Token.objects.get_or_create(user= attempted_user)
+        return Response({"details":"user exists","token":token.key})
+    except get_user_model().DoesNotExist:
+      return Response({"details":"user not found"})
+  except KeyError:
+    return Response({"details":"key error"})  
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated,],)
+def respnsewhenverified(req):
+  return Response({"detail":"i have been allowed for your viewing","user":req.user.username})
+
+   
 

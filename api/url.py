@@ -25,11 +25,16 @@ urlpatterns= [
   path("allimages",views.getallimg,name="allimg"),
 
 
-  # testing for multiple trys
+  # testing for multiple try
   path("multitry/<str:namee>",views.gettesting,name="gettesting"),
 
   # another random test
-  path("anothertest",views.getanothertesting,name="another test")
+  path("anothertest",views.getanothertesting,name="another test"),
+
+  # verify and add user test
+  path('adduser',views.adduser,name="adduser"),
+  path('verifyuser',views.verify_user,name="verifyuser"),
+  path('checkifverified',views.respnsewhenverified,name="checkifverified")
 ]
 
 

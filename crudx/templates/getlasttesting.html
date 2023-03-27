@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background-color: rgb(54, 52, 52);
+      color: aliceblue;
+      padding: 0;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h5>LAST TESTING>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>></h5>
+  <script>
+    async function fetcher() {
+      const endpoint = "http://127.0.0.1:8000/api/anothertest"
+      const data = {
+        "title": "testing1",
+        "summary": "testing1summary"
+      }
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+      })
+
+      const resp = await res.json()
+      console.log(resp)
+
+    }
+
+    window.onload = fetcher()
+  </script>
+</body>
+
+</html>

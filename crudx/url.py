@@ -15,7 +15,11 @@ urlpatterns = [
   path("mobile",views.render_mobile,name="mobile"),
   path("multi",views.render_multitry,name="multitry"),
   path("all-words",views.render_all_words,name="renderallwords"),
-  path("all-img",views.renderallimg,name="allimg")
+  path("all-img",views.renderallimg,name="allimg"),
+  path("anothertesting",views.renderanothertesting,name="anothertesting"),
+  path("checkuser",views.renderverifyuser,name="verifyusertemplate"),
+  path('auther',views.auther,name="auth user"),
+  path('urlcheck',views.renderurlchecker,name="urlchecker")
 
 ]
 

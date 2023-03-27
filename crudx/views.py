@@ -14,6 +14,10 @@ def render_testing(request):
   return render(request,"getstudent.html")
 
 
+def renderanothertesting(req):
+  return render(req,"getlasttesting.html")
+
+
 def render_final_testing_1(request):
   return render(request,"addword.html")
 
@@ -54,6 +58,17 @@ def render_all_words(req):
 
 def renderallimg(req):
   return render(req,"allimg.html")
+
+def renderverifyuser(req):
+  return render(req,"getuser.html")
+
+def renderurlchecker(req):
+  return render(req,"urlcheck.html")
+
+
+
+def auther(req):
+  print(req)
 
 
 
